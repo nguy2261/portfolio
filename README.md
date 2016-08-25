@@ -5,3 +5,5 @@ I'm learning new technology everyday from developing Web App using React.js to B
 </p>
 --
 Incoming Portfolio: Angular.js and React.js 
+
+![Funny Picture](https://wyncode.co/wp-content/uploads/2014/08/171.jpg)
