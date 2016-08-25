@@ -2,9 +2,13 @@
 ##My Portfolio including class and side projects
 <p>
 Welcome to my little code portfolio. I hope you have a great trip looking around.
-I'm learning new technology everyday from developing Web App using React.js to BI tool like Tableau or Messenger AI Bot but mainly forcus on Front-end, Business Intelligence and Data Analytic 
+I'm learning new technology everyday from developing Web App using React.js to BI tool like Tableau or Messenger AI Bot but mainly forcus on Front-end, Business Intelligence and Data Analytic
 </p>
---
-Incoming Portfolio: Angular.js and React.js 
+Contact me at 
+- Email:      nguy2261@umn.edu
+- Linkedin:   https://www.linkedin.com/in/hieunguyen2261
+- Phone:      203-640-4477
 
+Incoming Project: Angular.js and React.js <br />
+Happy coding and analyzing!  <br />
 ![Funny Picture](https://wyncode.co/wp-content/uploads/2014/08/171.jpg)
