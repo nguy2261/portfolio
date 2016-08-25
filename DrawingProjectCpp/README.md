@@ -1,9 +1,14 @@
-PhotoShop
+FlashPhoto and Medical Image App
 =========
 
-Iteration 3
+Code for my capstone project: painting/image manipulation application
+--
+Developed a photo processing software in C++ which allows user to draw pictures, edit and apply different filters to image by implementing convolution neural network
 
-Code for 3081W painting/image manipulation application
+Implemented a medical-oriented photo processing software which specializes in interacting with a stack of images, analyze medical pictures via command lines
 
-Build the code by running
+The program was developed in a team of three, using OOP technique, UML Diagram, Doxygen, and open-source libraries including GLUI, JPG and PNG image files
+
+--
+Build the code by running in the main folder
 `$ make`
