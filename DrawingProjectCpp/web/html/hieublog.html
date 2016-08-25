@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title> Hieu Nguyen's Blog </title> 
+	<link class = "page" rel="stylesheet" type="text/css" href="stylesheet.css">
+
+</head>
+<body>
+
+
+	<div class="content">
+		<nav>
+			<a href="../index.html" class = "page"> Home </a> |
+			<a href="usersupport.html" class = "page"> User Support </a> |
+			<a href="developersupport.html" class = "page"> Developer Support</a>
+		</nav>
+	</div>
+
+	<div class = "content">
+		<h1>Hieu Nguyen's Blog</h1>
+<body lang="en-US" dir="ltr">
+<p lang="vi-VN"><font face="Times New Roman">Hieu Nguyen – Blog
+Entry 3: Iteration 3 Mia and FlashPhoto</font></p>
+<p lang="vi-VN"><font face="Times New Roman">In Iteration 3, I spent
+most of the time on migrating source code from FlashPhoto to MIA
+including implementation of the new UI, refactoring the code and
+writing documentation for final release. Therefore, the code portion
+in this Blog Entry will be less than the previous blog. In fact, I
+will briefly discuss about creating the red pen tool &amp; stamp tool
+for Mia, the implementation of command line for Mia and writing test
+program for FlashPhoto. </font>
+</p>
+<p lang="vi-VN"><font face="Times New Roman">Code Snipget 1:
+Implementation of Red Pen Tool and Stamp Tool</font></p>
+<p lang="vi-VN"><font face="Times New Roman">First, we have to reduce
+the factory tool size to 2, which are the pen and stamp to avoid
+selection on unavailable tool. This part is implemented by Ian
+Stanton from my team.</font></p>
+<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">switch</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(toolID)
+{</span></font></font></font></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">case</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">TOOL_PEN:</span></font></font></font></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">case</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">TOOL_STAMP:</span></font></font></font></p>
+<p lang="vi-VN"><font face="Times New Roman">Keep the implemenation
+of Tpen and Fixed the color of the pen to red only (255,0,0)</font></p>
+<p><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">m_tools[m_curTool]-&gt;</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">applyToBuffer</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(x,
+m_height-y, </span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">ColorData</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">255</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">,</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">0</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">,</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">0</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">),
+m_displayBuffer);</span></font></font></font></p>
+<p><font face="Times New Roman">Pre-loaded the marker for the Stamp</font></p>
+<p><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">TStamp::setStampBuffer</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">ImageHandler::loadImage</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">&quot;testImages/marker.png&quot;</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">));</span></font></font></font></p>
+<p><font face="Times New Roman">Generally, the implementation of
+these two tools are fairly simple and efficient thanks to the
+previous design of the solution.</font></p>
+<p><font face="Times New Roman">Code Snipget 2: Implementation of
+Command Line</font></p>
+<p><font face="Times New Roman">For this feature, I create a new
+method for Mia to invoke whenever the program input exists.</font></p>
+<p><font face="Times New Roman">First, we validate the input picture
+file and then load it into an internal buffer of Mia:</font></p>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">if</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+			</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">isValidImageFileName</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(argv[</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">1</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">]))</span></font></font></font><font color="#333333">&nbsp;&nbsp;&nbsp;
+			</font><font face="Times New Roman"><br/>
+</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp; </font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">isValidImageFile</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(argv[</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">1</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">]))</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_commandBuffer
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::loadImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(argv[</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">1</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">]);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">else</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">perror</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Incorrect
+			input file &quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">}
+			</font></font></font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">else</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp; </font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">perror</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Incorrect
+			input filename &quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">);</font></font></font></p>
+		</td>
+	</tr>
+</table>
+<p><font face="Times New Roman">Then, we check the second input to
+see if it’s “-h” or not. If it asked to display the help menu,
+we display the menu by loading an existing text file and exit the
+operation.</font></p>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p style="margin-bottom: 0.2in"><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">if</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+			</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">strcmp</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(argv[</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">1</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">],
+			</span></font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">&quot;-h&quot;</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">)
+			== </span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">0</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">)</span></font></font></font></p>
+			<p><font color="#333333">&nbsp;&nbsp; <font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">system</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;cat
+			src/help.txt&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">return</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp; <font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+</table>
+<p><font face="Times New Roman">If not, we go into the loop that Mia
+will iterate through each command input and conduct the requested
+operation. For example, if the user requested to apply a sharpen
+filter with an amount of 5.0 to the input picture, Mia will create a
+filter by the filter factory, apply it, increase the counter to the
+next command input and move into the next argument.</font></p>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">int</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+			</span></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">counter
+			= </span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">2</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">;</span></font></font></font><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">while</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(counter
+			&lt;= argc - </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">2</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">)</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp; <font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">strcmp</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(argv[counter],</span></font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">&quot;-sharpen&quot;</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">)
+			== </span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">0</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">){</span></font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">Filter
+			* f = </span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">FilterFactory::getFilter</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(FilterFactory::FILTER_SHARPEN,
+			</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">1</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">,
+			</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">atof</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">(argv[counter+</span></font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">1</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">]));</span></font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">FilterFactory::applyFilter</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(f,
+			m_commandBuffer);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">delete</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">f;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">counter++;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+</table>
+<p><font face="Times New Roman">The other command inputs are also
+handled in the same manner. In the end, Mia will validate the output
+file and save it as the requested name.</font></p>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::saveImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(argv[argc-</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">1</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">],
+			m_commandBuffer)) {</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">std::cout
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Successfully
+			saved image&quot;</font></font></font><font color="#333333"> </font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">&lt;&lt;
+			std::endl;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">}
+			</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">else</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">std::cout
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Unsuccessfully
+			saved image...&quot;</font></font></font><font color="#333333"> </font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">&lt;&lt;
+			std::endl;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: none; padding: 0in"></td>
+	</tr>
+</table>
+<p><font face="Times New Roman">During the iteration through the
+command line input, Mia will conduct all the valid requested command
+up to the invalid one. In that case, it will break the operation,
+output the error, save the current result under the requested name
+and exit.</font></p>
+<p><font face="Times New Roman">Code Sniget 3: To test all the tools
+of the FlashPhoto, we first created some expected results as
+pre-defined picture by creating fake inputs using the applyToBuffer
+method of each tool. Then, when testing, we will replicate the same
+tool’s operation on the buffer and compare it to the expected
+result.</font></p>
+<p><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">void</span></font></font></font><font color="#333333"><span style="background: #ffffff">
+</span></font><font color="#795da3"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">TestFlash::runTestTool</span></font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt"><span style="background: #ffffff">()</span></font></font></font></p>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">{&nbsp;&nbsp;
+			</font></font></font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp; </font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">for</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">int</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">i
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">0</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			i &lt; </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">7</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			i++){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(i
+			== </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">5</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">TStamp::setStampBuffer</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::loadImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;test/colorCircles.png&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">));</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(i
+			== </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">6</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_testBuffer
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::loadImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;test/snaily.jpg&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">}
+			</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">else</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_testBuffer
+			= </font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">new</font></font></font><font color="#333333">
+			</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">PixelBuffer</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">800</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">800</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ColorData</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">1</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">1</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">0.95</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">));</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">for</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">int</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">x
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">390</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			x &lt; </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">410</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			x++){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">for</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">int</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">y
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">390</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			y &lt; </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">410</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			y++){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_tools[i]-&gt;</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">applyToBuffer</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(x,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">800</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">-y,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ColorData</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">220</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">240</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">,</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">120</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">),m_testBuffer);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">std::string
+			save = </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;test/current/tool&quot;</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">+
+			</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">to_string</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(i)
+			+ </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;.jpg&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::saveImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(save,m_testBuffer);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_testBuffer
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::loadImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(save);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">std::string
+			load = </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;test/testtool&quot;</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">+
+			</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">to_string</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(i)
+			+ </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;.jpg&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in"></td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">m_expectBuffer
+			= </font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">ImageHandler::loadImage</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(load);</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">if</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">compareBuffer</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">(m_testBuffer,m_expectBuffer)){</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">cout
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Testing
+			Tool &quot;</font></font></font><font color="#333333"> </font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">&lt;&lt;
+			m_tools[i]-&gt;</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">getName</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">()
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;
+			PASSED.\n&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;
+			</font></font></font>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">}
+			</font></font></font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">else</font></font></font><font color="#333333">
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">{</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">cout
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;Testing
+			Tool &quot;</font></font></font><font color="#333333"> </font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">&lt;&lt;
+			m_tools[i]-&gt;</font></font></font><font color="#0086b3"><font face="Consolas"><font size="2" style="font-size: 9pt">getName</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">()
+			&lt;&lt; </font></font></font><font color="#183691"><font face="Consolas"><font size="2" style="font-size: 9pt">&quot;
+			FAILED.\n&quot;</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</font><font color="#a71d5d"><font face="Consolas"><font size="2" style="font-size: 9pt">break</font></font></font><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">;</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333">&nbsp;&nbsp;&nbsp; <font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" style="border: none; padding: 0in">
+			<p><font color="#333333"><font face="Consolas"><font size="2" style="font-size: 9pt">}</font></font></font></p>
+		</td>
+	</tr>
+</table>
+<p><font face="Times New Roman">Initially, we decided to do some fake
+inputs and compare the buffer without saving the m_testBuffer.
+However, I found out that the ImageHandler would slightly modify the
+color data of the buffer if I saved it, which made the pictures
+before and after saving were two different pictures. To go around
+this error, I have to save the m_testBuffer, the load it again and
+compare it with m_expectBuffer. The same idea is applied to testing
+each filter. </font>
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+</body>
+	
+	</div>
+
+	<div class = "footer">
+		<!-- You can change the copyright! -->
+		<span class="copyright">&copy; 2016, Group Application</span> 
+	</div>
+
+
+</body>
+</html>

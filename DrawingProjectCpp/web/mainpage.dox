@@ -1,0 +1,5 @@
+/** \mainpage Group Application's Documentation Page
+ \section main FlashPhoto & Mia
+  Documentation of code used by both FlashPhoto and Mia applications.  While FlashPhoto and Mia are separate programs, they share many of the same features.  Both applications share code from the libphoto.a library, which is comprised of their like features.  Anything unique to one application can be found in the program's directory.  For example, functions and classes unique to Mia can be found in the /Mia folder.  
+  
+*/

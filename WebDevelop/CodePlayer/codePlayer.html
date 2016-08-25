@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+    <title>Code Player</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script type = "text/javascript" src="jquery.min.js"></script>
+    <script type = "text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <style type="text/css">
+
+        body {
+            margin: 0;
+            padding: 0;
+
+        }
+        #menuBar{
+            width:100%;
+            height: 60px;
+            background-color: #92DDF4;
+            border-bottom: 1px solid grey;
+        }
+    
+        #logo {
+            font-family: Baskerville, 'Baskerville Old Face', 'Hoefler Text', Garamond, 'Times New Roman', serif;
+            padding: 20px;
+            font-size: 120%;
+            font-weight: bold;
+            float:left;
+        }
+
+        #buttonDiv {
+            float:right;
+            padding: 10px 40px 10px 0;
+            width: 120px;
+            height: 30px;
+        }
+        #runBtn {
+            font-family: Baskerville, 'Baskerville Old Face', 'Hoefler Text', Garamond, 'Times New Roman', serif;
+            padding: 10px;
+            width: 120px;
+            font-size: 100%;
+            font-weight: bold;
+            border-radius: 3px;
+            background-color:white;
+        }
+    
+        #toggle {
+            list-style:none;
+            margin: 0 auto;
+            border-radius: 3px;
+            height: 28px;
+            width: 236px;
+            border: 2px solid grey;
+            padding: 0;
+            position: relative;
+            top: 15px;
+        }
+
+        #toggle li {
+            float: left;
+            border-right: 2px solid grey;
+            padding: 6px;
+            font-size: 100%;
+        }
+
+        .clear {
+            clear:both;
+        }
+
+        .codeContainer {
+            height: 100%;
+            width:50%;
+            float:left;
+            position: relative;
+        }
+
+        textarea {
+            font-family: courier;
+            font-size: 100%;
+            padding: 5px;
+        }
+
+        .codeContainer textarea{
+            width:100%;
+            height:100%;
+            border:none;
+            border-right: 1px solid grey;
+            box-sizing: border-box;
+        }
+        
+        .codeLabel {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        #CSSCon, #JavaScriptCon {
+            display:none;
+        }
+
+        iframe {
+            height: 100%;
+            position: relative;
+            left: 20px;
+            border: none;
+        }
+
+        .selected { 
+            background-color: grey;
+        }
+    </style>    
+</head>
+
+<body>
+
+    <div id = "wrapper">
+        <div id = "menuBar">
+            <div id ="logo">CodeWebRunner</div>
+            <div id ="buttonDiv">
+                <button id ="runBtn">Run</button>
+            </div>
+
+            <ul id = "toggle">
+                <li class = "tgg selected">HTML</li>
+                <li class = "tgg">CSS</li>
+                <li class = "tgg">JavaScript</li>
+                <li class = "tgg selected" style = "border: none" >Result</li>
+            </ul>
+
+        </div>
+
+        <div class ="clear"></div>
+
+        <div class = "codeContainer" id = "HTMLCon">
+            <div class = "codeLabel">HTML</div>
+            <textarea id = "htmlCode"><p id = "test">Helo</p></textarea>
+        </div>
+
+        <div class = "codeContainer" id = "CSSCon">
+            <div class = "codeLabel">CSS</div>
+            <textarea id = "cssCode">p{color:red;}</textarea>
+        </div>
+
+        <div class = "codeContainer" id = "JavaScriptCon">
+            <div class = "codeLabel">JavaScript</div>
+            <textarea id = "jsCode">
+                
+                document.getElementById("test").innerHTML = "Hello world";</textarea>
+        </div>
+
+        <div class = "codeContainer" id = "ResultCon">
+            <div class = "codeLabel">Result</div>
+            <iframe id = "resultFrame"></iframe>
+        </div>
+
+
+
+
+    </div>
+
+    
+    <script>
+        
+        var windowHeight = $(window).height();
+        var menuBarHeight = $("#menuBar").height();
+        var codeContainerHeight = windowHeight - menuBarHeight;
+        $(".codeContainer").height(codeContainerHeight +"px");
+
+        $(".tgg").click(function() {
+            $(this).toggleClass("selected");
+            var activeDiv = $(this).html();
+            $("#"+activeDiv + "Con").toggle();
+            
+            var showingDivs = $(".codeContainer").filter(function() {
+                return ($(this).css("display") != "none");
+            }).length;
+
+            var w = 100/showingDivs;
+            $(".codeContainer").width(w+"%");
+        });
+
+        $("#runBtn").click(function(){
+ 
+            $("iframe").contents().find("html").html("test");
+            $("iframe").contents().find("html").html("<style>"+$('#cssCode').val() + "</style>" + $("#htmlCode").val());
+            document.getElementById("resultFrame").contentWindow.eval($("#jsCode").val());
+        });
+
+    </script>
+    
+
+</body>
+</html>

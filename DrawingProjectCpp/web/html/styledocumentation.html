@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title> Coding Style and Documentation </title> 
+	<link class = "page" rel="stylesheet" type="text/css" href="stylesheet.css">
+
+</head>
+<body>
+
+
+	<div class="content">
+		<nav>
+			<a href="../index.html" class = "page"> Home </a> |
+			<a href="usersupport.html" class = "page"> User Support </a> |
+			<a href="developersupport.html" class = "page"> Developer Support</a>
+		</nav>
+	</div>
+
+	<div class = "content">
+		<h1>Coding Style and Documentation</h1>
+<body lang="en-US" dir="ltr">
+<p style="margin-bottom: 0in; line-height: 100%"><b>Coding Style</b></p>
+<p style="margin-bottom: 0in; line-height: 100%">When writing a
+program of any size, it is very important to keep with a common
+style. This will not only make it easier for you, but also for those
+developing for the project in the future. One styling point that is
+particularly important is spacing. Take the following line of code
+for example:</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<pre class="western" style="margin-bottom: 0.2in">if (imageFile.find(&quot;.jpg&quot;, imageFile.size() - 5) != std::string::npos)</pre><p style="margin-bottom: 0in; line-height: 100%">
+You could easily write something like this as follows: 
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<pre class="western" style="margin-bottom: 0.2in">if(imageFile.find(&quot;.jpg&quot;,imageFile.size()-5)!=std::string::npos)</pre><p style="margin-bottom: 0in; line-height: 100%">
+Notice how the second example is a bit harder to read and looks very
+scrunched together. By using spacing where appropriate, you can make
+your code much easier to read and work with. This is just one of many
+important aspects of coding style. We can also see our bracket
+placement convention in the following piece of code. Notice how the
+are both directly lined up with the 'i' in 'if'. This is a very
+common way to place your statement and function brackets. 
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<pre class="western">        //Check for valid .jpg extension
+        if (imageFile.find(&quot;.jpg&quot;, imageFile.size() - 5) != std::string::npos)
+        {
+                //We have a jpg image, so call the appropriate jpg load function
+                cout &lt;&lt; &quot;Image extension is .jpg&quot; &lt;&lt; endl;
+                image = JPGImage::load(imageFile);
+        }</pre><p style="margin-bottom: 0in; line-height: 100%">
+One could also write the statement as follows:</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<pre class="western">        //Check for valid.jpg extension
+        if (imageFile.find(&quot;.jpg&quot;, imageFile.size() - 5) != std::string::npos) {
+                //We have a jpg image, so call the appropriate jpg load function
+                cout &lt;&lt; &quot;Image extension is .jpg&quot; &lt;&lt; endl;
+                image = JPGImage::load(imageFile);
+        }</pre><p style="margin-bottom: 0in; line-height: 100%">
+This is also a very common way to place your brackets, but we have
+chosen to go the route of that in the first example.  We have also implemented a naming a few naming conventions for particular classes.  Take tools for example.  Each tool file starts with 'T'.  The same goes for filters, so blur tool files would be named 'TBlur.*', and blur tool files would be named 'FBlur.*'.  This really helps to organize the code nicely in a directory.  With this naming convention in place, all tools will be grouped together, as well as filters.</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><b>Documentation</b></p>
+<p style="margin-bottom: 0in; line-height: 100%"><font size="3" style="font-size: 12pt">Another
+important aspect of style is commenting your code. Comments help to
+better explain what is going on in your code. It is important to
+leave useful comments in your code where you feel necessary, but be
+wary of overdoing it. Too many comments can clutter the code. Notice
+that we have clearly indicated what the piece of code is doing with 
+</font><font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">//Check
+for valid .jpg extension.</font></font></p>
+<p><font size="3" style="font-size: 12pt">We then confirm the
+condition in which we execute the following statements with <font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">//We
+have a jpg image, so call the appropriate jpg load function.  </font></font><font face="Liberation Serif, serif">This
+piece of code is relatively self explanatory, and does not need any
+additional comments. </font></font>
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">Please be sure to
+follow our styling and commenting conventions when adding your work
+to our code.</p>
+</body>
+	
+	</div>
+
+	<div class = "footer">
+		<!-- You can change the copyright! -->
+		<span class="copyright">&copy; 2016, Group Application</span> 
+	</div>
+
+
+</body>
+</html>

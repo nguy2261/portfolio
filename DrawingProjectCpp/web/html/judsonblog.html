@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title> Judson Stangler's Blog </title> 
+	<link class = "page" rel="stylesheet" type="text/css" href="stylesheet.css">
+
+</head>
+<body>
+
+
+	<div class="content">
+		<nav>
+			<a href="../index.html" class = "page"> Home </a> |
+			<a href="usersupport.html" class = "page"> User Support </a> |
+			<a href="developersupport.html" class = "page"> Developer Support</a>
+		</nav>
+	</div>
+
+	<div class = "content">
+		<h1>Judson Stangler's Blog</h1>
+<h1 font-family: "Times New Roman">Not Quite Everything</h1>
+
+<body font-family: "Times New Roman">I am discussing the one portion of the code that has not quite made it to the production standard, but is meant to be further implemented as soon as possible.  That is the application of a function to a directory of images.  </body>
+&nbsp
+<h2 font-family: "Times New Roman">The Code</h2>
+<body font-family: "Times New Roman">Note that all of the code is within spoilers for the sake of reading the text and checking the length.  They can all be open at one point in time, and the author for the spoiler code is listed in the comments.</body>
+<!--The method for revealing the spoiler boxes is not mine.  I am using it for the sake of the visual ease on the reader.  For the creator go to http://www.bloggersentral.com/2009/12/create-show-hide-or-peek-boo.html.-->
+<br>
+<button title="Button" type="button" onclick="if(document.getElementById('Code1') .style.display=='none') {document.getElementById('Code1') .style.display=''}else{document.getElementById('Code1') .style.display='none'}" font-family: "Times New Roman">
+Code for Retrieving file name
+</button>
+<button title="Button" type="button" onclick="if(document.getElementById('Code2') .style.display=='none') {document.getElementById('Code2') .style.display=''}else{document.getElementById('Code2') .style.display='none'}">
+Code for Crating Matrix
+</button>
+</body>
+<pre id = "Code1" style ="display:none" font-family: "Times New Roman">
+  int counters;
+  //Loading input file into buffer
+    const char* file= argv[1];
+    std::string fileString = file;
+    if(strcmp(fileString.substr(0,fileString.size()-1).c_str(),"/")){
+      const char* dir=fileString.substr(0,fileString.size()-1).c_str();
+      DIR *activeDir;
+      activeDir=opendir(dir);
+      struct dirent *dire;
+      struct stat buff;
+      counters=0;
+      if (activeDir!=NULL)
+	    {
+	      readdir(activeDir);
+	      readdir(activeDir);
+	      m_fileSet=new char*[256];
+	      while ((dire = readdir(activeDir)) != NULL)
+	      {
+		      char* fileLocation=dire->d_name;
+		      char* fileName;
+		      strcpy(fileName,argv[1]);
+		      strcat(fileName,fileLocation);
+		      if (stat((const char*) fileName, &buff)!=0){
+		      perror("There was an error occuring with file reading, corrupt file");
+		    }
+		    ...
+</pre> 
+<br>
+<pre id="Code2" style="display:none" font-family: "Times New Roman"> 
+	  if(isValidImageFile(fileName)){
+	    m_fileSet[counters]=(char*) calloc(strlen(fileName),1);
+	    memcpy(m_fileSet[counters],fileName,strlen(fileName));
+	    counters++;
+	    }
+	}
+	closedir(activeDir);
+}
+else{
+	perror("The indicated directory is not a real directory");
+}
+</pre> 
+
+
+
+
+<br>
+<h2>Purpose</h2>
+<div font-family: "Times New Roman">
+This code was designed to apply changes over a directory of picture files.  It does this by storing all of the names of the picture files within the given directory in a char** value named m_fileSet.  As the main loop runs it allocates every file registered as an image into this array for processing later on.  Later on a call is made to a function named runCommand, which will take the given Pixel_Buffer and then apply changes to it.  As the current implementation causes memory corruption errors, we are unable to present it.</div>
+<br>
+
+<h2 font-family: "Times New Roman">Why this way?  How else could it be done?  Why is it incomplete?</h2>
+<div font-family: "Times New Roman">This implementation was decided as it takes other principles used commonly through the file, an array of pointers to pertinant objects like the Tools and bisecting out the functions as done with the isValidImageFile command.  We could have implemented this as a secondary function from the 1 file command line, but in doing so we create more complexity on the number of functions we have to keep track and debug through if there is ever a problem.  We could have also asked for a specific format for the files aside, such as directory/image###.png, but we found the complexity with that, while marginally more efficient, outweighed said efficience.  The function is commented out and incomplete as of this time as it creates memory corruption and fails after about 12-24 files being loaded in.  We could not ascertain the cause of these issues and so we left this function out of the final project, to be implemented later on in development.  <div>
+
+	
+	</div>
+
+	<div class = "footer">
+		<!-- You can change the copyright! -->
+		<span class="copyright">&copy; 2016, Group Application</span> 
+	</div>
+
+
+</body>
+</html>

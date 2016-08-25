@@ -1,0 +1,60 @@
+	
+	 	 ==============
+		|Welcome to Mia|
+	 	 ==============
+
+Complete list of command line arguments
+---------------------------------------
+	
+	-h
+	-sharpen <integer>
+	-edgedetect
+	-thresh <float>
+	-quantize <integer>
+	-blur <float>
+	-saturate <float>
+	-multrgb <float> <float> <float>
+	-compare
+
+Example applications of command line arguments
+----------------------------------------------
+
+Convert an image in JPG format to PNG format:
+	./Mia in.jpg out.png
+
+Convert an image in PNG format to JPG format:
+	./Mia in.png out.jpg
+
+Apply sharpening filter:
+	./Mia in.png -sharpen <int> out.png
+
+Apply edge detection filter:
+	./Mia in.png
+
+Apply threshold filter:
+	./Mia in.png -thresh <float> out.png
+
+Apply quantize filter:
+	./Mia in.png -quantize <integer> out.png
+
+Apply blur filter:
+	./Mia in.png -blur <float> out.png
+
+Apply saturation filter:
+	./Mia in.png -saturate <float> out.png
+
+Apply multiply RGB filter:
+	./Mia in.png -multrgb <float> <float> <float> out.png
+
+Image comparison:
+	./Mia image1.png -compare image2.png
+
+Apply a command to each image in a directory:
+	./Mia inDir -<argument> outDir
+
+Apply multiple filters to an image (this example shows two filter operations,
+but Mia supports an arbitrary number of filter operations that are specified 
+in the order they should be applied):
+	./Mia in.png -sharpen 5 -edgedetect out.png
+
+

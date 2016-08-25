@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title> Ian Stanton's Blog </title> 
+	<link class = "page" rel="stylesheet" type="text/css" href="stylesheet.css">
+
+</head>
+<body>
+
+
+	<div class="content">
+		<nav>
+			<a href="../index.html" class = "page"> Home </a> |
+			<a href="usersupport.html" class = "page"> User Support </a> |
+			<a href="developersupport.html" class = "page"> Developer Support</a>
+		</nav>
+	</div>
+
+	<div class = "content">
+		<h1>Ian Stanton's Blog</h1>
+<body lang="en-US" dir="ltr">
+<p align="left" style="margin-bottom: 0in; line-height: 100%">The
+portion of code that I will be discussing is the Tool Factory for the
+Mia application. This iteration required a lot of code re-factoring,
+which left us with FlashPhoto and Mia as separate applications
+sharing a library of common C++ and header files. One of Mia's unique
+specifications is that it only uses two tools, while FlashPhoto
+includes a handful. This meant that we could not use the same Tool
+Factory file for both FlashPhoto and Mia, leaving us with
+ToolFactoryMia and ToolFactoryFlash. The following is the C++ file
+for ToolFactoryMia, followed by its header file:</p>
+<p align="left" style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<pre class="western">#include &quot;ToolFactoryMia.h&quot;
+#include &quot;libphoto.h&quot;
+int ToolFactory::getNumTools() 
+{
+        return NUMTOOLS;
+}
+
+
+Tool* ToolFactory::createTool(int toolID) 
+{
+        Tool* tool = NULL;
+        
+        switch (toolID) {
+                case TOOL_PEN:
+                        tool = new TPen();
+                        break;
+        case TOOL_STAMP:
+            tool = new TStamp();
+            break;
+                default:
+                        tool = NULL;
+                        break;
+        }
+        
+        return tool;
+}</pre><p>
+<br/>
+<br/>
+
+</p>
+<pre class="western">
+#ifndef TOOLFACTORYMIA_H
+#define TOOLFACTORYMIA_H
+
+#include 
+
+class Tool;
+
+/** This is the factory class for tools specific to Mia*/
+
+class ToolFactory 
+{
+public:
+        enum TOOLS 
+        {
+                TOOL_PEN = 0,
+        TOOL_STAMP,
+                NUMTOOLS
+        };
+        
+        static int getNumTools();
+        static Tool* createTool(int toolID);
+};
+
+#endif
+
+
+</pre><p style="margin-bottom: 0in; line-height: 100%">
+You may notice that these pieces of code look very similar to
+FlashPhoto's Tool Factory.  This is the case because Mia has borrowed
+the Pen and Stamp features from FlashPhoto.  Tools such as Eraser,
+Spray Can, Calligraphy Pen and Highlighter have simply been removed
+from these files.  We have decided to leave the name of the class
+itself unchanged.  Both FlashPhoto and Mia refer to the ToolFactory
+class in their respective code, but they will not conflict because
+they reside in separate directories.  If we were to change the name
+of the class, we would need to make changes in some of our other
+files.  
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">As far as coding
+style goes, we have left comments where we feel they are appropriate.
+These particular pieces of code are not terribly difficult to
+understand, so we made sure not to use too many comments in my code. 
+In fact, the only comment we have made here is one explaining the
+main function of the class.  Notice how this comment is wrapped with
+/** */.  By wrapping this around the comment's text, the comment will
+show up in our Doxygen generated documentation.  Please use this
+method when making comments anywhere in the source code.  Another
+styling point that we would like to make note of is bracket
+placement. Take the following line of code for example: 
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">enum
+TOOLS </font></font>
+</p>
+<pre class="western"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">{</font></font>
+        <font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">TOOL_PEN = 0,</font></font>
+<font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">TOOL_STAMP,</font></font>
+        <font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">NUMTOOLS</font></font>
+<font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">};</font></font></pre><p style="margin-bottom: 0in; line-height: 100%">
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">Notice how the
+brackets are lined up nicely under 'enum'.  This is one of multiple
+bracket placement methods, and we have chosen to use this one
+throughout our code for the sake of cohesion.  The piece of code
+could also have been written in the following format:</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">enum
+TOOLS  {</font></font></p>
+<pre class="western">        <font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">TOOL_PEN = 0,</font></font>
+<font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">TOOL_STAMP,</font></font>
+        <font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">NUMTOOLS</font></font>
+<font face="Liberation Mono, monospace"><font size="2" style="font-size: 10pt">};</font></font>
+</pre><p style="margin-bottom: 0in; line-height: 100%">
+While this format saves a line of code, we find that the format in
+the first example looks cleaner and is much easier to read.  Please
+follow this format when contributing to the source code of FlashPhoto
+and Mia.</p>
+</body>
+	
+	</div>
+
+	<div class = "footer">
+		<!-- You can change the copyright! -->
+		<span class="copyright">&copy; 2016, Group Application</span> 
+	</div>
+
+
+</body>
+</html>
