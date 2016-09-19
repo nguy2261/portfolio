@@ -12,4 +12,4 @@ Contact me at
 Incoming Project for front-end: Angular.js, Node.js and React.js <br />
 Incoming Project for data analytic: Tableau for processing large data, Python for processing, mining and machine learning <br />
 Happy coding and analyzing!  <br />
-![Funny Picture](https://wyncode.co/wp-content/uploads/2014/08/171.jpg)
+
